@@ -8,25 +8,32 @@ def gradle(args) {
 }
 
 node ("git && gradle && jdk8") {
-	stage "clean"
-	deleteDir()
+	stage "clean" {
+		deleteDir()
+	}
 
-	stage "scm"
-	checkout scm
+	stage "scm" {
+		checkout scm
+	}
 
-	stage "gradle-clean"
-	gradle "clean"
+	stage "gradle-clean" {
+		gradle "clean"
+	}
 
-	stage "compile"
-	gradle "classes"
+	stage "compile" {
+		gradle "classes"
+	}
 
-	stage "compile-tests"
-	gradle "testClasses"
+	stage "compile-tests" {
+		gradle "testClasses"
+	}
 
-	stage "test"
-	gradle "test"
-	junit "build/**/TEST-*.xml"
+	stage "test" {
+		gradle "test"
+		junit "build/**/TEST-*.xml"
+	}
 
-	stage "check"
-	gradle "check"
+	stage "check" {
+		gradle "check"
+	}
 }
