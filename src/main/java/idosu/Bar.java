@@ -3,7 +3,7 @@ package idosu;
 public class Bar {
 	private String foo;
 
-	public String foo() {i
+	public String foo() {
 		return "foo";
 	}
 
