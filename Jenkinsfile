@@ -19,7 +19,7 @@ def stg(name, closure) {
 	if (noError) {
 		stage name, {
 			try {
-				closure
+				closure()
 			} catch (UnstableException e) {
 				currentBuild.result = 'UNSTABLE'
 				noError = false
