@@ -3,7 +3,7 @@
 def gradle(args) {
 	def run = isUnix() ? sh : bat
 
-	return run "gradle ${args}";
+	return run("gradle ${args}")
 }
 
 node ("git && gradle && jdk8") {
