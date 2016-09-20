@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 def gradle(args) {
-	def run = isUnix() ? sh : bat
+	def run = isUnix() ? this.&sh : this.&bat
 
 	return run("gradle ${args}")
 }
