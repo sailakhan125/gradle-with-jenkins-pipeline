@@ -13,42 +13,53 @@ def gradle(args) {
 		: bat(command)
 }
 
-node ("git && gradle && jdk8") {
-	try {
-		stage("clean") {
-			deleteDir()
-		}
-	
-		stage("scm") {
-			checkout scm
-		}
-	
-		stage("gradle-clean") {
-			gradle "clean"
-		}
-	
-		stage("compile") {
-			gradle "classes"
-		}
-	
-		stage("compile-tests") {
-			gradle "testClasses"
-		}
-	
-		stage("test") {
+def noError = true;
+
+def stg(name, closure) {
+	if (noError) {
+		satge name, {
 			try {
-				gradle "test"
-			} catch (e) {
-				throw new UnstableException(e);
-			} finally {
-				junit "build/**/TEST-*.xml"
+				closure
+			} catch (UnstableException e) {
+				currentBuild.result = 'UNSTABLE'
+				noError = false
 			}
 		}
-	
-		stage("check") {
-			gradle "check"
+	}
+}
+
+node ("git && gradle && jdk8") {
+	stg "clean", {
+		deleteDir()
+	}
+
+	stg "scm", {
+		checkout scm
+	}
+
+	stg "gradle-clean", {
+		gradle "clean"
+	}
+
+	stg "compile", {
+		gradle "classes"
+	}
+
+	stg "compile-tests", {
+		gradle "testClasses"
+	}
+
+	stg "test", {
+		try {
+			gradle "test"
+		} catch (e) {
+			throw new UnstableException(e);
+		} finally {
+			junit "build/**/TEST-*.xml"
 		}
-	} catch (UnstableException e) {
-		currentBuild.result = 'UNSTABLE';
+	}
+
+	stg "check", {
+		gradle "check"
 	}
 }
