@@ -17,7 +17,7 @@ noError = true
 
 def stg(name, closure) {
 	if (noError) {
-		satge name, {
+		satge(name) {
 			try {
 				closure
 			} catch (UnstableException e) {
