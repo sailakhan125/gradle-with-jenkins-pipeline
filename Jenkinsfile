@@ -13,7 +13,7 @@ def gradle(args) {
 		: bat(command)
 }
 
-def noError = true;
+noError = true
 
 def stg(name, closure) {
 	if (noError) {
