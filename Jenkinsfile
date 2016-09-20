@@ -1,9 +1,10 @@
 #!/usr/bin/env groovy
 
 def gradle(args) {
-	def run = isUnix() ? this.&sh : this.&bat
-
-	return run("gradle ${args}")
+	def command = "gradle ${args}";
+	return isUnix()
+		? sh command
+		: bat command
 }
 
 node ("git && gradle && jdk8") {
