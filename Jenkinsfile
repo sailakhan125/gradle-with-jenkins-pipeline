@@ -67,8 +67,8 @@ node ("git && gradle && jdk8") {
 		} finally {
 			publishHTML([
 				allowMissing: true,
-				alwaysLinkToLastBuild: false,
-				keepAll: true,
+				alwaysLinkToLastBuild: true,
+				keepAll: false,
 				reportDir: 'build/reports/tests',
 				reportFiles: 'index.html',
 				reportName: 'Coverage Report'
