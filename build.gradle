@@ -1,6 +1,7 @@
 #!/usr/bin/env groovy
 
 apply plugin: 'java'
+apply plugin: 'jacoco'
 
 repositories {
 	mavenCentral()
