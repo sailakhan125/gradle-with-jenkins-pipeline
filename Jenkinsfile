@@ -60,6 +60,19 @@ node ("git && gradle && jdk8") {
 	}
 
 	stg "check", {
-		gradle "check"
+		try {
+			gradle "check"
+		} catch (e) {
+			throw new UnstableException(e);
+		} finally {
+			publishHTML([
+				allowMissing: true,
+				alwaysLinkToLastBuild: false,
+				keepAll: true,
+				reportDir: 'build/reports/tests',
+				reportFiles: 'index.html',
+				reportName: 'coverage'
+			])
+		}
 	}
 }
