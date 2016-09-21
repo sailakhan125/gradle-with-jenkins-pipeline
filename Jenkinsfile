@@ -71,7 +71,7 @@ node ("git && gradle && jdk8") {
 				keepAll: true,
 				reportDir: 'build/reports/tests',
 				reportFiles: 'index.html',
-				reportName: 'coverage'
+				reportName: 'Coverage Report'
 			])
 		}
 	}
