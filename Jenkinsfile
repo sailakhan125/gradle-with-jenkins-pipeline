@@ -59,24 +59,20 @@ node ("git && gradle && jdk8") {
 		}
 	}
 
-	stg "coverage", {
-		gradle "jacocoTestReport"
-		publishHTML([
-			allowMissing: true,
-			alwaysLinkToLastBuild: true,
-			keepAll: false,
-			reportDir: 'build/reports/jacoco/test/html/',
-			reportFiles: 'index.html',
-			reportName: 'Coverage Report'
-		])
-	}
-
 	stg "check", {
 		try {
 			gradle "check"
 		} catch (e) {
 			throw new UnstableException(e);
-		} finally {
 		}
+			publishHTML([
+				allowMissing: true,
+				alwaysLinkToLastBuild: true,
+				keepAll: false,
+				reportDir: 'build/reports/jacoco/test/html/',
+				reportFiles: 'index.html',
+				reportName: 'Coverage Report'
+			])
+		{
 	}
 }
