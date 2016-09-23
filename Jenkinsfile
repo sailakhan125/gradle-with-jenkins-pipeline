@@ -73,6 +73,6 @@ node ("git && gradle && jdk8") {
 				reportFiles: 'index.html',
 				reportName: 'Coverage Report'
 			])
-		{
+		}
 	}
 }
