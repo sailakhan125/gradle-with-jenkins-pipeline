@@ -1,8 +1,21 @@
 #!/usr/bin/env groovy
 
-jacocoTestReport {
-	// This code was copied from https://github.com/springfox/springfox/blob/fb780ee1f14627b239fba95730a69900b9b2313a/gradle/coverage.gradle
-	// For now there is no way to fail with jacoco plugin, there is a jira opened https://issues.gradle.org/browse/GRADLE-2783
+apply plugin: 'jacoco'
+
+// This code was copied from https://github.com/springfox/springfox/blob/fb780ee1f14627b239fba95730a69900b9b2313a/gradle/coverage.gradle
+// For now there is no way to fail with jacoco plugin, there is a jira opened https://issues.gradle.org/browse/GRADLE-2783
+task jacocoCoverage(type: JacocoReport) {
+	description 'Runs jacoco report and validates the code coverage percentage from the property ext.limits'
+        group = 'verification'
+}
+
+check.dependsOn jacocoCoverage
+
+jacocoCoverage {
+	sourceDirectories = sourceSets.main.java
+	classDirectories = sourceSets.main.output
+	executionData = files(test.jacoco.destinationFile)
+
 	reports.xml.enabled true
 	doLast {
 		def report = reports.xml.destination
@@ -62,5 +75,3 @@ jacocoTestReport {
 		}
 	}
 }
-
-check.dependsOn jacocoTestReport

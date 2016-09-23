@@ -69,7 +69,7 @@ node ("git && gradle && jdk8") {
 				allowMissing: true,
 				alwaysLinkToLastBuild: true,
 				keepAll: false,
-				reportDir: 'build/reports/jacoco/test/html/',
+				reportDir: 'build/reports/jacoco/jacocoReport/html/',
 				reportFiles: 'index.html',
 				reportName: 'Coverage Report'
 			])

@@ -1,8 +1,17 @@
 #!/usr/bin/env groovy
 
 apply plugin: 'java'
-apply plugin: 'jacoco'
+//apply plugin: 'jacoco'
 apply from: 'jacoco.gradle'
+
+sourceSets {
+	moreTest {
+		java.srcDir 'src/moreTest/java'
+		resources.srcDir 'src/moreTest/resources'
+		compileClasspath = sourceSets.test.compileClasspath
+		runtimeClasspath = output + sourceSets.test.runtimeClasspath
+	}
+}
 
 repositories {
 	mavenCentral()
@@ -21,4 +30,14 @@ ext.limits = [
 	'class' : 95
 ]
 
-jacocoTestReport.reports.html.enabled true
+task moreTest(type: Test) {
+	jacoco.enabled = true
+	group = "verification"
+	testClassesDir = sourceSets.moreTest.output.classesDir
+	classpath = sourceSets.moreTest.runtimeClasspath
+}
+
+jacocoCoverage {
+	reports.html.enabled true
+	executionData += files(moreTest.jacoco.destinationFile)
+}
