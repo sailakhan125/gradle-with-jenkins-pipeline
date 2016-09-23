@@ -64,7 +64,7 @@ node ("git && gradle && jdk8") {
 			gradle "check"
 		} catch (e) {
 			throw new UnstableException(e);
-		}
+		} finally {
 			publishHTML([
 				allowMissing: true,
 				alwaysLinkToLastBuild: true,
