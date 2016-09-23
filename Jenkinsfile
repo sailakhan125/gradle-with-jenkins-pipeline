@@ -46,12 +46,12 @@ node ("git && gradle && jdk8") {
 	}
 
 	stg "compile-tests", {
-		gradle "testClasses"
+		gradle "testClasses moreTestClasses"
 	}
 
 	stg "test", {
 		try {
-			gradle "test"
+			gradle "test moreTest"
 		} catch (e) {
 			throw new UnstableException(e);
 		} finally {
@@ -66,9 +66,9 @@ node ("git && gradle && jdk8") {
 			throw new UnstableException(e);
 		} finally {
 			publishHTML([
-				allowMissing: true,
+				allowMissing: false,
 				alwaysLinkToLastBuild: true,
-				keepAll: false,
+				keepAll: true,
 				reportDir: 'build/reports/jacoco/jacocoCoverage/html',
 				reportFiles: 'index.html',
 				reportName: 'Coverage Report'
