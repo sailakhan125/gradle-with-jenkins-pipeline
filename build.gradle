@@ -21,15 +21,6 @@ dependencies {
 	testCompile 'junit:junit:4.12'
 }
 
-ext.limits = [
-	'instruction' : 93,
-	'branch' : 88,
-	'line' : 91,
-	'complexity' : 84,
-	'method' : 87,
-	'class' : 95
-]
-
 task moreTest(type: Test) {
 	jacoco.enabled = true
 	group = "verification"
@@ -40,4 +31,11 @@ task moreTest(type: Test) {
 jacocoCoverage {
 	reports.html.enabled true
 	executionData += files(moreTest.jacoco.destinationFile)
+
+	instructionPercent = 100
+        branchPercent = 100
+        linePercent = 100
+        complexityPercent = 100
+        methodPercent = 100
+        classPercent = 100	
 }
