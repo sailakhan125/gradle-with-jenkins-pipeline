@@ -1,0 +1,85 @@
+#!/usr/bin/env groovy
+
+apply plugin: 'jacoco'
+
+// This code was copied from https://github.com/springfox/springfox/blob/fb780ee1f14627b239fba95730a69900b9b2313a/gradle/coverage.gradle
+// For now there is no way to fail with jacoco plugin, there is a jira opened https://issues.gradle.org/browse/GRADLE-2783
+class PercentJacocoReport extends JacocoReport {
+	// TODO(idosu): move all properties to percents property(percents: { line: 0, ... })
+	double instructionPercent = 0
+	double branchPercent = 0
+	double linePercent = 0
+        double complexityPercent = 0
+        double methodPercent = 0
+        double classPercent = 0
+}
+
+task jacocoCoverage(type: PercentJacocoReport) {
+	description 'Runs jacoco report and validates the code coverage percentage from the property ext.limits'
+        group 'verification'
+}
+
+check.dependsOn jacocoCoverage
+jacocoCoverage.dependsOn test
+
+jacocoCoverage {
+	sourceDirectories = sourceSets.main.java
+	classDirectories = sourceSets.main.output
+	executionData = files(test.jacoco.destinationFile)
+
+	reports.xml.enabled true
+	doLast {
+		if (!reports.xml.enabled) {
+			throw new InvalidUserDataException("jacocoCoverage.reports.xml.enabled must be true but was ${reports.xml.enabled}");
+		}
+
+		def parser = new XmlParser()
+		parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		parser.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false)
+
+		def counters = parser.parse(reports.xml.destination).counter
+
+		def metricNames = [
+			'instruction',
+			'branch',
+			'line',
+			'complexity',
+			'method',
+			'class'
+		]
+
+		def metrics = [ : ]
+		metricNames.each {
+			def type = it.toUpperCase();
+			def curr = counters.find { it.'@type'.equals(type) }
+
+			def covered = 0;
+			def missed = 0
+			if (curr != null) {
+				covered = curr.'@covered' as Double
+				missed = curr.'@missed' as Double
+			}
+			def all = covered + missed
+
+			metrics << [ "${it}" : all == 0 ? 100.0 : ((covered / (covered + missed)) * 100).round(2) ]
+		}
+
+		logger.debug("metrics: " + metrics)
+
+		def failures = []
+		metrics.each {
+			def limit = jacocoCoverage."${it.key}Percent"
+			if (it.value < limit) {
+				failures << "${it.key} coverage rate is: ${it.value}%, minimum was ${limit}%"
+			}
+		}
+
+		if (failures) {
+			logger.error("Code coverage failed")
+			failures.each {
+				logger.error("	- ${it}")
+			}
+			throw new GradleException("Code coverage failed")
+		}
+	}
+}
