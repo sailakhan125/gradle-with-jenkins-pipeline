@@ -6,12 +6,12 @@ apply plugin: 'jacoco'
 // For now there is no way to fail with jacoco plugin, there is a jira opened https://issues.gradle.org/browse/GRADLE-2783
 class PercentJacocoReport extends JacocoReport {
 	// TODO(idosu): move all properties to percents property(percents: { line: 0, ... })
-	double instructionPercent = 0
-	double branchPercent = 0
-	double linePercent = 0
-        double complexityPercent = 0
-        double methodPercent = 0
-        double classPercent = 0
+	double instructionPercent = 100
+	double branchPercent = 100
+	double linePercent = 100
+        double complexityPercent = 100
+        double methodPercent = 100
+        double classPercent = 100
 }
 
 task jacocoCoverage(type: PercentJacocoReport) {
