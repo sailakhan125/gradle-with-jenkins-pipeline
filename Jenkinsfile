@@ -8,9 +8,7 @@ class UnstableException extends RuntimeException {
 
 def gradle(args) {
 	def command = "gradle ${args}";
-	return isUnix()
-		? sh(command)
-		: bat(command)
+	return isUnix() ? sh(command) : bat(command)
 }
 
 noError = true

@@ -21,8 +21,8 @@ dependencies {
 }
 
 task moreTest(type: Test) {
-	jacoco.enabled = true
-	group = "verification"
+	jacoco.enabled true
+	group "verification"
 	testClassesDir = sourceSets.moreTest.output.classesDir
 	classpath = sourceSets.moreTest.runtimeClasspath
 }
@@ -34,9 +34,9 @@ jacocoCoverage {
 	executionData += files(moreTest.jacoco.destinationFile)
 
 	instructionPercent = 100
-        branchPercent = 100
-        linePercent = 100
-        complexityPercent = 100
-        methodPercent = 100
-        classPercent = 100	
+	branchPercent = 100
+	linePercent = 100
+	complexityPercent = 100
+	methodPercent = 100
+	classPercent = 100
 }

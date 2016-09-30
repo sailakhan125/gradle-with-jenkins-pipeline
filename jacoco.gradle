@@ -9,14 +9,14 @@ class PercentJacocoReport extends JacocoReport {
 	double instructionPercent = 100
 	double branchPercent = 100
 	double linePercent = 100
-        double complexityPercent = 100
-        double methodPercent = 100
-        double classPercent = 100
+	double complexityPercent = 100
+	double methodPercent = 100
+	double classPercent = 100
 }
 
 task jacocoCoverage(type: PercentJacocoReport) {
-	description 'Runs jacoco report and validates the code coverage percentage from the property ext.limits'
-        group 'verification'
+	description = 'Runs jacoco report and validates the code coverage percentage from the property ext.limits'
+	group = 'verification'
 }
 
 check.dependsOn jacocoCoverage
@@ -53,13 +53,13 @@ jacocoCoverage {
 			def type = it.toUpperCase();
 			def curr = counters.find { it.'@type'.equals(type) }
 
-			def covered = 0;
+			def covered = 0
 			def missed = 0
 			if (curr != null) {
-				covered = curr.'@covered' as Double
-				missed = curr.'@missed' as Double
+				covered = curr.'@covered' as double
+				missed = curr.'@missed' as double
 			}
-			def all = covered + missed
+			double all = covered + missed
 
 			metrics << [ "${it}" : all == 0 ? 100.0 : ((covered / (covered + missed)) * 100).round(2) ]
 		}
