@@ -28,7 +28,7 @@ def stg(name, closure) {
 	}
 }
 
-node ("git && gradle && jdk8") {
+node {
 	stg "clean", {
 		deleteDir()
 	}
