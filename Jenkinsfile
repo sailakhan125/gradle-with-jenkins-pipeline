@@ -37,9 +37,9 @@ node {
 		checkout scm
 	}
 
-	stg "gradle-clean", {
-		gradle "clean"
-	}
+	//stg "gradle-clean", {
+	//	gradle "clean"
+	//}
 
 	stg "compile", {
 		gradle "classes"
